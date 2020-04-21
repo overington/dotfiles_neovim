@@ -1,5 +1,3 @@
-"python with virtualenv support
-let g:python3_host_prog = '/Users/samuel/.virtualenvs/neovim/bin/python3.7'
 
 " nnoremap <leader>vp :python.venvPath = $WORKON_HOME + "/bin/python"
 nnoremap <leader>vp :python.venvPath = %{$VIRTUAL_ENV} . "/bin/python"
@@ -8,6 +6,7 @@ nnoremap <buffer> H :<C-u>execute "!pydoc3 " . expand("<cword>")<CR>
 " Select in python method - eg np.ar*ray() will select [np.array]()
 " Needs a little bit more work - as if there is no '()' at the end of the end,
 " it will not work
+" select in method
 nnoremap vim t(m"T v`"
 " nnoremap <S-;> <S-V>""y<CR> :!pydoc3 <C-r>0<CR>
 vnoremap <S-J> ""y<CR> :!pydoc3 <C-r>0<CR>
