@@ -131,11 +131,14 @@ fun! PandocTemplateFile()
   endif
 endf
 
-com! PanOpen call PandocOpenPDF()
 nmap <Leader><leader>O :PanOpen
 
 com! PanFile call PandocTemplateFile()
 nmap <Leader><leader>f :PanFile
+" Redirect messages into @l and pandoc the file
+nmap <Leader><leader>F :redir @l<CR>:PanFile<CR>:redir END<CR>
+" paste the @l log from l register into a new buffer
+nmap <Leader><leader>l :vsp ene<CR>"lp
 
 com! PanAll call PandocTemplateAll()
 nmap <Leader><leader>a :PanAll

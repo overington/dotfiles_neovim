@@ -55,14 +55,7 @@ let g:polyglot_disabled = ['latex']
 let mapleader = ","
 let maplocalleader = "`"
 set number
-nmap <leader><leader>/ :setlocal spell! spelllang=en_gb<CR>
 
-" folding {{{
-set foldlevelstart=0
-" Space to toggle folds
-nnoremap <Space> za
-vnoremap <Space> za
-" }}}
 " Statusline {{{
 set statusline^=%{coc#status()}
 " set statusline+=(%{$VIRTUAL_ENV})
@@ -101,6 +94,65 @@ endf
 nnoremap <C-\> :call ToggleNetrwBrowser()<cr>
 
 " }}}
+"
+
+
+" Unified color scheme (default: dark)
+" }}}
+" Keyboard mappings {{{
+" Keyboard mappings (General) {{{
+" enter spell checking mode
+nnoremap <leader><leader>/ :setlocal spell! spelllang=en_gb<CR>
+" 
+" Turn off hilighting
+nnoremap <leader><leader>h :nohl<CR>
+" toggle conceallevel in settings
+
+fun! ConcealLevelToggle()
+  :let &conceallevel = (&conceallevel+1)%3
+endf
+
+nnoremap <leader>vc :call ConcealLevelToggle()<CR>
+"
+" Quickfix next and previous
+nnoremap <leader>] :lnext<CR>
+nnoremap <leader>[ :lprevious<CR>
+
+" Force creating of file using `gf`, even if the file doesn't exist.
+nnoremap g% :e <cfile><CR>
+
+" Open in new split
+nnoremap gV :belowright vsp <cfile><CR>
+
+" }}}
+" navigation VIMRC {{{
+
+" my init.vim
+nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" My FT plugins
+nnoremap <leader>eft :vsp ~/.config/nvim/ftplugin/<CR>
+
+" My Python Files
+nnoremap <leader>epy :vsp ~/.config/nvim/ftplugin/python_mappings.vim <CR>
+
+" }}}
+" simpleTODO {{{
+nmap <leader>l <Plug>(simple-todo-new-list-item)
+nmap <leader>L <Plug>(simple-todo-new-list-item-start-of-line)
+" }}}
+" folding {{{
+set foldlevelstart=0
+" Space to toggle folds
+nnoremap <leader>z0 :set foldlevel=0
+nnoremap <leader>z1 :set foldlevel=1
+nnoremap <leader>z2 :set foldlevel=2
+nnoremap <leader>z3 :set foldlevel=3
+nnoremap <leader>z4 :set foldlevel=4
+nnoremap <Space> za
+vnoremap <Space> za
+" }}}
 " snippets (coc-snippets) {{{
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
@@ -132,28 +184,25 @@ vnoremap <leader>p "+p
 vnoremap <leader>P "+P
 
 " }}}
-" simpleTODO {{{
-nmap <leader>l <Plug>(simple-todo-new-list-item)
-nmap <leader>L <Plug>(simple-todo-new-list-item-start-of-line)
+" latex {{{
+
+" pdflatex:
+nnoremap <leader>AL :!pdflatex %:r<CR>
+nnoremap <leader>AA :!axohelp %:r<CR>
+nnoremap <leader>AP :!open %:r.pdf<CR>
+nnoremap <leader>AX :!pdflatex %:r; axohelp %:r; pdflatex %;open %:r.pdf<CR>
+" luatex builds:
+nnoremap <leader>LL :!lualatex %;open %:r.pdf<CR>
+nnoremap <leader>Lg :!lualatex %;<CR>:spl<CR>:e %:r.log<CR>
+
 " }}}
-
-
-
-" Unified color scheme (default: dark)
-
-
-" Quickfix next and previous
-nmap <leader>] :lnext<CR>
-nmap <leader>[ :lprevious<CR>
-
-" Force creating of file using `gf`, even if the file doesn't exist.
-" Open in new split
-nmap g% :e <cfile><CR>
-" :map gf :e <cfile><CR>
-" :map gF :vsp ++splitright=true <cfile><CR>
-nmap gV :belowright vsp <cfile><CR>
-
-
+" COC  {{{
+" vmap <leader>p  <Plug>(coc-format-selected)
+nnoremap <leader>p  <Plug>(coc-format-selected)
+" <Plug>(coc-diagnostic-next) 			*n_coc-diagnostic-next*
+" <Plug>(coc-diagnostic-prev) 			*n_coc-diagnostic-prev*
+" }}}
+" 
 " }}}
 
 " Language Specific {{{
@@ -167,29 +216,7 @@ autocmd FileType json syntax match Comment +\/\/.\+$+
 let g:python3_host_prog = '/Users/samuel/.virtualenvs/neovim/bin/python3'
 let g:python_host_prog = '/Users/samuel/.virtualenvs/neovim/bin/python'
 " }}}
-" markdown and Pandoc {{{
-" Automating the pandoc options
-nnoremap <leader>PP :!pandoc --from markdown -i % ~/src/latex/frontmatter.yaml -o %.pdf; open %.pdf<CR>
-" }}}
-" latex {{{
-
-" pdflatex:
-nnoremap <leader>AL :!pdflatex %:r<CR>
-nnoremap <leader>AA :!axohelp %:r<CR>
-nnoremap <leader>AP :!open %:r.pdf<CR>
-nnoremap <leader>AX :!pdflatex %:r; axohelp %:r; pdflatex %;open %:r.pdf<CR>
-" luatex builds:
-nnoremap <leader>LL :!lualatex %;open %:r.pdf<CR>
-nnoremap <leader>Lg :!lualatex %;<CR>:spl<CR>:e %:r.log<CR>
-
-" }}}
 " Plugins and settings {{{
-" COC  {{{
-" vmap <leader>p  <Plug>(coc-format-selected)
-nnoremap <leader>p  <Plug>(coc-format-selected)
-" <Plug>(coc-diagnostic-next) 			*n_coc-diagnostic-next*
-" <Plug>(coc-diagnostic-prev) 			*n_coc-diagnostic-prev*
-" }}}
 
 " nerdcommenter
 let NERDSpaceDelims=1
@@ -201,19 +228,6 @@ let NERDSpaceDelims=1
 " let g:syntastic_check_on_open = 1
 " let g:syntastic_check_on_wq = 0
 
-
-" }}}
-" VIMRC {{{
-
-" my init.vim
-nnoremap <leader>ev :vsp $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
-
-" My FT plugins
-nnoremap <leader>eft :vsp ~/.config/nvim/ftplugin/<CR>
-
-" My Python Files
-nnoremap <leader>epy :vsp ~/.config/nvim/ftplugin/python_mappings.vim <CR>
 
 " }}}
 
