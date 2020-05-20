@@ -1,4 +1,5 @@
-
+let g:python_config = "~/.config/nvim/ftplugin/python_mappings.vim"
+nnoremap <leader>efp :exe ':vsp 'g:python_config<cr>
 " nnoremap <leader>vp :python.venvPath = $WORKON_HOME + "/bin/python"
 nnoremap <leader>vp :python.venvPath = %{$VIRTUAL_ENV} . "/bin/python"
 nnoremap <buffer> H :<C-u>execute "!pydoc3 " . expand("<cword>")<CR>
@@ -6,17 +7,18 @@ nnoremap <buffer> H :<C-u>execute "!pydoc3 " . expand("<cword>")<CR>
 " Select in python method - eg np.ar*ray() will select [np.array]()
 " Needs a little bit more work - as if there is no '()' at the end of the end,
 " it will not work
-" select in method
+" select all in current method
 nnoremap vim t(m"T v`"
 " nnoremap <S-;> <S-V>""y<CR> :!pydoc3 <C-r>0<CR>
 vnoremap <S-J> ""y<CR> :!pydoc3 <C-r>0<CR>
-vnoremap <leader>x ""y :python3 <C-r>0<CR>
+" Execute script
+vnoremap <leader>xc ""y :python3 <C-r>0<CR>
 " vnoremap 
 
 
 " vnoremap <NL> :python %<CR>
 " nnoremap <NL> :!python %<CR>
-nnoremap <leader>px :w<CR>:!python %<CR>
+nnoremap <leader>xp :w<CR>:!python %<CR>
 " inoremap <C-X> <ESC>:w<CR>:!python %<CR>
 
 
