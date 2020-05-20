@@ -15,12 +15,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'sonph/onehalf', {'rtp': 'vim/'}  " Colourscheme
 Plug 'felixhummel/setcolors.vim'
 
-" Plug 'vim-syntastic/syntastic'
+Plug 'vim-syntastic/syntastic'
 Plug 'davidhalter/jedi-vim' " Python autocompletion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 " If you have nodejs and yarn
+Plug 'vimwiki/vimwiki' " vimwiki
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'jkramer/vim-checkbox'
 Plug 'godlygeek/tabular' "must come before vim-markdown
@@ -32,7 +33,7 @@ Plug 'lervag/vimtex'
 Plug 'jmcantrell/vim-virtualenv'
 " Plug 'miyakogi/vim-virtualenv'
 Plug 'aperezdc/vim-template'
-Plug 'honza/vim-snippets'
+" Plug 'honza/vim-snippets'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
@@ -103,17 +104,22 @@ nnoremap <C-\> :call ToggleNetrwBrowser()<cr>
 " Keyboard mappings (General) {{{
 " enter spell checking mode
 nnoremap <leader><leader>/ :setlocal spell! spelllang=en_gb<CR>
-" 
+
+" <leader>v mappings:
 " Turn off hilighting
-nnoremap <leader><leader>h :nohl<CR>
+nnoremap <leader>vh :nohl<CR>
 " toggle conceallevel in settings
+nnoremap <leader>vc :call ConcealLevelToggle()<CR>
 
 fun! ConcealLevelToggle()
   :let &conceallevel = (&conceallevel+1)%3
 endf
 
-nnoremap <leader>vc :call ConcealLevelToggle()<CR>
-"
+nnoremap <leader>vl :call AddLocalCompletion()<CR>
+fun! AddLocalCompletion()
+  " Add files in current directory to the completion setting
+  set complete+=",s=%:r*"
+endf
 " Quickfix next and previous
 nnoremap <leader>] :lnext<CR>
 nnoremap <leader>[ :lprevious<CR>
@@ -129,6 +135,7 @@ nnoremap gV :belowright vsp <cfile><CR>
 
 " my init.vim
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>xsv :source $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " My FT plugins
@@ -136,7 +143,18 @@ nnoremap <leader>eft :vsp ~/.config/nvim/ftplugin/<CR>
 
 " My Python Files
 nnoremap <leader>epy :vsp ~/.config/nvim/ftplugin/python_mappings.vim <CR>
+" serach through vimrc files
+func! SearchVimConfig(searchtext)
+  exe '!ag '. a:searchtext .' ~/.config/nvim/'
+endf
+nnoremap <leader>esvc :redir => g:searchtext<cr>:exe ":call input('Enter search: ')"<CR>:redir END<CR>:call SearchVimConfig(g:searchtext)
 
+" }}}
+" Git {{{
+nnoremap <leader>ga :Git add %<CR>
+nnoremap <leader>gw :w<cr>:Git add %<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit<CR>
 " }}}
 " simpleTODO {{{
 nmap <leader>l <Plug>(simple-todo-new-list-item)
@@ -153,22 +171,6 @@ nnoremap <leader>z4 :set foldlevel=4
 nnoremap <Space> za
 vnoremap <Space> za
 " }}}
-" snippets (coc-snippets) {{{
-" Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
-
-" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
-
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-
-" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
-" }}}
 " Copy and paste to clipboard {{{
 set pastetoggle=<C-P>
 " set clipboard+=unmappedplus
@@ -177,12 +179,10 @@ nnoremap  <leader>Y  "+yg_
 nnoremap  <leader>y  "+y
 nnoremap  <leader>yy  "+yy
 
-" Paste from clipboard (paste)
-nnoremap <leader>p "+p
-nnoremap <leader>P "+P
-vnoremap <leader>p "+p
-vnoremap <leader>P "+P
 
+" }}}
+" Make {{{
+nnoremap <leader>mm :make<CR>
 " }}}
 " latex {{{
 
@@ -198,11 +198,52 @@ nnoremap <leader>Lg :!lualatex %;<CR>:spl<CR>:e %:r.log<CR>
 " }}}
 " COC  {{{
 " vmap <leader>p  <Plug>(coc-format-selected)
-nnoremap <leader>p  <Plug>(coc-format-selected)
+vmap <C-o> <Plug>(coc-format-selected)
+" edit current file snippets
+nnoremap <leader>esf :CocCommand snippets.editSnippets<CR>
+nnoremap <leader>eso :CocCommand snippets.openSnippetFiles<CR>
+" nnoremap <leader>eso :call CocCommand('snippets.openSnippetFiles', 'vsplit')<CR>
 " <Plug>(coc-diagnostic-next) 			*n_coc-diagnostic-next*
 " <Plug>(coc-diagnostic-prev) 			*n_coc-diagnostic-prev*
+"
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
 " }}}
-" 
+" WordNetwork Dictinoary / Thesaurus {{{
+func! WN_overview(wrd)
+  " Show the overview of the word using WordNetwork
+  exe '!wn '.a:wrd.' -over'
+endf
+func! WN_synonyms(wrd, t)
+  " Show the Synonyms of the word using WordNetwork - the available options
+  " for t are:
+  " n: noun
+  " v: verb
+  " a: adjective
+  " r: ...
+  exe '!wn '.a:wrd.' -syns'.a:t
+endf
+
+nnoremap <leader>do :call WN_overview(expand("<cword>"))<CR>
+nnoremap <leader>dsn :call WN_synonyms(expand("<cword>"), 'n')<CR>
+nnoremap <leader>dsv :call WN_synonyms(expand("<cword>"), 'v')<CR>
+nnoremap <leader>dsa :call WN_synonyms(expand("<cword>"), 'a')<CR>
+nnoremap <leader>dsr :call WN_synonyms(expand("<cword>"), 'r')<CR>
+
+" }}}
+
 " }}}
 
 " Language Specific {{{
@@ -216,6 +257,10 @@ autocmd FileType json syntax match Comment +\/\/.\+$+
 let g:python3_host_prog = '/Users/samuel/.virtualenvs/neovim/bin/python3'
 let g:python_host_prog = '/Users/samuel/.virtualenvs/neovim/bin/python'
 " }}}
+" VimWiki {{{
+let g:vimwiki_list = [{'path': '~/Documents/devices/Documents/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+" }}}
 " Plugins and settings {{{
 
 " nerdcommenter
@@ -223,10 +268,16 @@ let NERDSpaceDelims=1
 
 " " Syntastic
 
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 " let g:syntastic_check_on_open = 1
 " let g:syntastic_check_on_wq = 0
+
+nnoremap <leader>x? :SyntasticCheck<CR>
+let g:syntastic_mode_map = {
+  \ "mode": "passive",
+  \ "active_filetypes": ["c", "c++"],
+  \ "passive_filetypes": ["python"] }
 
 
 " }}}

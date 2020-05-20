@@ -92,7 +92,7 @@ fun! PandocTemplateChap(pre)
   exe '!(cd ' g:proj_basedir .
         \ ' && pandoc '.
         \ '--filter pandoc-citeproc '.
-        \ '%:p:h/' . a:pre . '*.md ' . b:pan_config_file ' '.
+        \ '%:p:h/' . a:pre . '*.md ' . b:config_file ' '.
         \ '--pdf-engine ' b:pdf_engine ' ' .
         \ '--template '. b:template .' --listings ' .
         \ '--from=markdown+tex_math_single_backslash ' .
@@ -102,6 +102,20 @@ fun! PandocTemplateChap(pre)
   endif
 endf
 
+fun! PandocTemplateFormat(file_name)
+  let b:file_name = 'draft-amplitudes.pdf'
+  exe '!(cd ' g:proj_basedir .
+        \ ' && pandoc '.
+        \ '--filter pandoc-citeproc '.
+        \ '%:p:h/*.md ' . b:config_file ' '.
+        \ '--pdf-engine ' b:pdf_engine ' ' .
+        \ '--template '. b:template .' --listings ' .
+        \ '--from=markdown+tex_math_single_backslash ' .
+        \ '-o ' .b:output_dir. a:file_name . ')'
+  if g:pandoc_openaftercompile
+    call PandocOpenPDF(a:file_name)
+  endif
+endf
 fun! PandocTemplateAll()
   let b:file_name = 'draft-amplitudes.pdf'
   exe '!(cd ' g:proj_basedir .
