@@ -16,8 +16,10 @@ Plug 'sonph/onehalf', {'rtp': 'vim/'}  " Colourscheme
 Plug 'felixhummel/setcolors.vim'
 
 Plug 'vim-syntastic/syntastic'
-Plug 'davidhalter/jedi-vim' " Python autocompletion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" coc-jedi: Python autocompletion
+Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
+Plug 'clangd/coc-clangd', { 'do': 'yarn install --frozen-lockfile && yarn build' }
 
 " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 " If you have nodejs and yarn
@@ -29,6 +31,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'masukomi/vim-markdown-folding'
 Plug 'vitalk/vim-simple-todo'
 Plug 'lervag/vimtex'
+Plug 'mattn/emmet-vim' " HTML 5 expansion
 
 Plug 'jmcantrell/vim-virtualenv'
 " Plug 'miyakogi/vim-virtualenv'
@@ -220,6 +223,9 @@ let g:coc_snippet_prev = '<c-k>'
 
 " Use <C-j> for both expand and jump (make expand higher priority.)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
+"
+" Remap for rename current word
+nmap <leader>ewr <Plug>(coc-rename)
 " }}}
 " WordNetwork Dictinoary / Thesaurus {{{
 func! WN_overview(wrd)
