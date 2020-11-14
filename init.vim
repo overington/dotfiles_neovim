@@ -1,12 +1,16 @@
 " Plugins {{{
 
 " '~/.config/nvim/ftplugin/'
+
+let g:polyglot_disabled = ['markdown']
+
 "
 call plug#begin('~/.config/nvim/plugged')
 
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+" Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-fugitive'
+Plug 'ctrlpvim/ctrlp.vim'
 "
 " Plug 'flazz/vim-colorschemes'  " A bunch of ColourSchemes
 " Plug 'dylanaraps/wal.vim'
@@ -185,7 +189,9 @@ nnoremap  <leader>yy  "+yy
 
 " }}}
 " Make {{{
-nnoremap <leader>mm :make<CR>
+nnoremap <leader>xm :exe 'make %:r.o && ./%:r.o'<CR>
+nnoremap <leader>mm :exe 'make %:r.o && ./%:r.o'<CR>
+
 " }}}
 " latex {{{
 
@@ -254,6 +260,19 @@ nnoremap <leader>dsr :call WN_synonyms(expand("<cword>"), 'r')<CR>
 
 " Language Specific {{{
 
+" text {{{
+function! TwiddleCase(str)
+  if a:str ==# toupper(a:str)
+    let result = tolower(a:str)
+  elseif a:str ==# tolower(a:str)
+    let result = substitute(a:str,'\(\<\w\+\>\)', '\u\1', 'g')
+  else
+    let result = toupper(a:str)
+  endif
+  return result
+endfunction
+vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
+" }}}
 " JSON  {{{
 " Corrects the hilighting in JSONC files - so that comments work
 autocmd FileType json syntax match Comment +\/\/.\+$+
@@ -284,6 +303,9 @@ let g:syntastic_mode_map = {
   \ "mode": "passive",
   \ "active_filetypes": ["c", "c++"],
   \ "passive_filetypes": ["python"] }
+
+" VimTex default flavour https://github.com/lervag/vimtex/commit/f78a0bdadbe9bccf15df855268e3e38ec8b3c7c3
+let g:tex_flavor = 'latex'
 
 
 " }}}
