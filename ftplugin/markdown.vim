@@ -57,21 +57,39 @@ nmap <Leader>md <Plug>MarkdownPreview
 nmap <Leader>ms <Plug>MarkdownPreviewStop
 nmap <leader><Leader>m <Plug>MarkdownPreviewToggle
 " Some latex macros to replace $$ for \begin{align}\end{align}
-" /$$ccmanddmb`aV`bS\align}
-" V/$$n:s/\$\$//ggvS\align
+" /$$<CR>ccmanddmb`aV`bS\align}<CR>
+" V/$$<CR>n:s/\$\$//g<CR>gvS\align<CR>
 
 func! MY_MarkdownToHTML()
   !pandoc --from markdown --to html % | pbcopy
 endfunction
 com! MD2HTML call MY_MarkdownToHTML()
 nmap <Leader>mh :MD2HTML<CR>
+nmap <Leader>mh :MD2HTML<CR>
 
+
+
+" pandoc output settings {{{
+" dissertation {{{
+" let g:proj_basedir='~/Documents/Study/2019-20/project/dissertation/' " This is the base where pandoc will run from, when looking for
+" let b:template=g:proj_basedir.'assets/template-eisvogel.latex'
+" let b:config_file=g:proj_basedir.'_conf.yaml -s'
+" let b:pdf_engine='lualatex'
+" " let b:output_dir=g:proj_basedir.'outpout/'
+" let b:output_dir='~/Documents/Study/2019-20/project/thesis_output/'
+" }}}
+" 
+" regular {{{
 let g:proj_basedir='~/Documents/Study/2019-20/project/dissertation/' " This is the base where pandoc will run from, when looking for
 let b:template=g:proj_basedir.'assets/template-eisvogel.latex'
 let b:config_file=g:proj_basedir.'_conf.yaml -s'
 let b:pdf_engine='lualatex'
 " let b:output_dir=g:proj_basedir.'outpout/'
 let b:output_dir='~/Documents/Study/2019-20/project/thesis_output/'
+" }}}
+" }}}
+
+
 imap <C-r><C-g> :r exe '!echo %'
 
 
@@ -182,3 +200,4 @@ func! WordProcessor()
 endfu
 com! WP call WordProcessor()
 
+" vim:foldmethod=marker:foldlevel=0
