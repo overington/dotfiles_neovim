@@ -48,6 +48,7 @@ Plug 'thaerkh/vim-indentguides'
 " Plug 'Yggdroot/indentLine'
 
 " Plug 'wsdjeg/vim-todo'
+Plug 'vimlab/split-term.vim'
 
 call plug#end()
 
@@ -63,6 +64,9 @@ let g:polyglot_disabled = ['latex']
 let mapleader = ","
 let maplocalleader = "`"
 set number
+
+" Auto-update buffer to most recent version of file, when file has been edited outside current session. Specifically fixes python-black edit
+au FocusGained,BufEnter * :checktim
 
 " Statusline {{{
 set statusline^=%{coc#status()}
@@ -96,6 +100,12 @@ set softtabstop=2
 " =4: act like "P" (ie. open previous window)
 let g:netrw_browse_split=4
 let t:netrw_toggle=0
+
+" = 0: thin listing (one file per line)
+" = 1: long listing (one file per line with time stamp information and file size)
+" = 2: wide listing (multiple files in columns)
+" = 3: tree style listing
+let g:netrw_liststyle=3
 function! ToggleNetrwBrowser()
   :topleft 40vsp %:p:h
 endf
@@ -133,9 +143,28 @@ nnoremap <leader>[ :lprevious<CR>
 
 " Force creating of file using `gf`, even if the file doesn't exist.
 nnoremap g% :e <cfile><CR>
-
 " Open in new split
 nnoremap gV :belowright vsp <cfile><CR>
+nn <leader><leader>t :terminal /home/samove01/work/aiet/check-me.sh<CR>
+nn <leader><leader>T :terminal /home/samove01/work/aiet/check-me.sh<CR>G
+
+" open a new tab
+nnoremap <leader>tt :tabe<cr>
+" Execute pytest
+tnoremap <leader>xpt :terminal pytest<cr>
+nnoremap <leader>xpt :terminal pytest<cr>
+" Search for word in current codebase
+let file_glob_expr = 'src/aiet/**/*/*.py'
+
+" search for func in the sentence self.func() if cursor over it
+nnoremap <leader>lw :execute('lvi /'.expand("<cword>").'/ '.file_glob_expr )<cr>
+
+" search for self.func() in the sentence self.func() if cursor over self or func
+nnoremap <leader>lW :execute('lvi /'.expand("<cWORD>").'/ '.file_glob_expr )<cr>
+
+" search for self.func in the sentence self.func() if cursor over self or func
+nnoremap <leader>lf :execute('lvi /'.expand("<cfile>").'/ '.file_glob_expr )<cr>
+
 
 " }}}
 " navigation VIMRC {{{
@@ -179,7 +208,7 @@ nnoremap <Space> za
 vnoremap <Space> za
 " }}}
 " Copy and paste to clipboard {{{
-set pastetoggle=<C-P>
+set pastetoggle=<M-p>
 " set clipboard+=unmappedplus
 vnoremap  <leader>y  "+y
 nnoremap  <leader>Y  "+yg_
@@ -216,22 +245,23 @@ nnoremap <leader>eso :CocCommand snippets.openSnippetFiles<CR>
 " <Plug>(coc-diagnostic-prev) 			*n_coc-diagnostic-prev*
 "
 " Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
+" imap <C-l> <Plug>(coc-snippets-expand)
 
 " Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
+" vmap <C-j> <Plug>(coc-snippets-select)
 
 " Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
+" let g:coc_snippet_next = '<c-j>'
 
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
+" let g:coc_snippet_prev = '<c-k>'
 
 " Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
+" imap <C-j> <Plug>(coc-snippets-expand-jump)
 "
 " Remap for rename current word
 nmap <leader>ewr <Plug>(coc-rename)
+:highlight CocFloating ctermbg=0
 " }}}
 " WordNetwork Dictinoary / Thesaurus {{{
 func! WN_overview(wrd)
@@ -279,11 +309,12 @@ autocmd FileType json syntax match Comment +\/\/.\+$+
 " }}}
 " python global settings {{{
 "python with virtualenv support
-let g:python3_host_prog = '/Users/samuel/.virtualenvs/neovim/bin/python3'
-let g:python_host_prog = '/Users/samuel/.virtualenvs/neovim/bin/python'
+let g:python3_host_prog = '$HOME/.virtualenvs/nvim/bin/python3'
+" let g:python3_host_prog = '/home/samove01/.virtualenvs/nvim/bin/python3'
+let g:python_host_prog = '$HOME/.virtualenvs/nvim/bin/python'
 " }}}
 " VimWiki {{{
-let g:vimwiki_list = [{'path': '~/Documents/devices/Documents/vimwiki/',
+let g:vimwiki_list = [{'path': '$HOME/Documents/vimwiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
 " }}}
 " Plugins and settings {{{
@@ -293,10 +324,17 @@ let NERDSpaceDelims=1
 
 " " Syntastic
 
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_python_checkers = ['pylint', 'pydocstyle']
+" let g:syntastic_python_checkers = ['pylint', 'mypy', 'pep8']
 
 nnoremap <leader>x? :SyntasticCheck<CR>
 let g:syntastic_mode_map = {
