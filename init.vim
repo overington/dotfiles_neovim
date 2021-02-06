@@ -1,8 +1,10 @@
+
+"
 " Plugins {{{
 
 " '~/.config/nvim/ftplugin/'
 
-let g:polyglot_disabled = ['markdown']
+let g:polyglot_disabled = ['markdown', 'latex']
 
 "
 call plug#begin('~/.config/nvim/plugged')
@@ -60,9 +62,9 @@ filetype indent on
 " Look and feel of vim {{{ 
 "
 
-let g:polyglot_disabled = ['latex']
 let mapleader = ","
 let maplocalleader = "`"
+set showmatch " show matching surround
 set number
 
 " Auto-update buffer to most recent version of file, when file has been edited outside current session. Specifically fixes python-black edit
