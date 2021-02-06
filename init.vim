@@ -16,7 +16,6 @@ Plug 'ctrlpvim/ctrlp.vim'
 "
 " Plug 'flazz/vim-colorschemes'  " A bunch of ColourSchemes
 " Plug 'dylanaraps/wal.vim'
-" Plug 'phanviet/vim-monokai-pro'
 " Plug 'junegunn/seoul256.vim'
 Plug 'sonph/onehalf', {'rtp': 'vim/'}  " Colourscheme
 Plug 'felixhummel/setcolors.vim'
