@@ -64,6 +64,7 @@ let g:polyglot_disabled = ['latex']
 let mapleader = ","
 let maplocalleader = "`"
 set number
+set path+=src
 
 " Auto-update buffer to most recent version of file, when file has been edited outside current session. Specifically fixes python-black edit
 au FocusGained,BufEnter * :checktim
@@ -148,16 +149,16 @@ nnoremap gV :belowright vsp <cfile><CR>
 nn <leader><leader>t :terminal /home/samove01/work/aiet/check-me.sh<CR>
 nn <leader><leader>T :terminal /home/samove01/work/aiet/check-me.sh<CR>G
 
-" open a new tab
-nnoremap <leader>tt :tabe<cr>
-" Execute pytest
-tnoremap <leader>xpt :terminal pytest<cr>
-nnoremap <leader>xpt :terminal pytest<cr>
+" create new tab
+nnoremap <leader>TT :tabe<cr>
 " Search for word in current codebase
 let file_glob_expr = 'src/aiet/**/*/*.py'
 
 " search for func in the sentence self.func() if cursor over it
-nnoremap <leader>lw :execute('lvi /'.expand("<cword>").'/ '.file_glob_expr )<cr>
+nnoremap <leader>* :execute('lvi /\<'.expand("<cword>").'\>/ '.file_glob_expr )<cr>
+nnoremap <leader>lw :execute('lvi /\<'.expand("<cword>").'\>/ '.file_glob_expr )<cr>
+nnoremap <leader>Lw :execute('lvi /\<'.expand("<cword>").'\>/ '.file_glob_expr )
+vnoremap <leader>lw y:execute('lvi /<C-R>"/ '. file_glob_expr )
 
 " search for self.func() in the sentence self.func() if cursor over self or func
 nnoremap <leader>lW :execute('lvi /'.expand("<cWORD>").'/ '.file_glob_expr )<cr>
@@ -235,33 +236,22 @@ nnoremap <leader>Lg :!lualatex %;<CR>:spl<CR>:e %:r.log<CR>
 
 " }}}
 " COC  {{{
+" GoTo code navigation
+nmap <silent> gd <plug>(coc-definition)
+nmap <silent> gy <plug>(coc-type-definition)
+nmap <silent> gi <plug>(coc-implementation)
+nmap <silent> gr <plug>(coc-references)
+
 " vmap <leader>p  <Plug>(coc-format-selected)
 vmap <C-o> <Plug>(coc-format-selected)
+
 " edit current file snippets
 nnoremap <leader>esf :CocCommand snippets.editSnippets<CR>
 nnoremap <leader>eso :CocCommand snippets.openSnippetFiles<CR>
-" nnoremap <leader>eso :call CocCommand('snippets.openSnippetFiles', 'vsplit')<CR>
-" <Plug>(coc-diagnostic-next) 			*n_coc-diagnostic-next*
-" <Plug>(coc-diagnostic-prev) 			*n_coc-diagnostic-prev*
-"
-" Use <C-l> for trigger snippet expand.
-" imap <C-l> <Plug>(coc-snippets-expand)
 
-" Use <C-j> for select text for visual placeholder of snippet.
-" vmap <C-j> <Plug>(coc-snippets-select)
-
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-" let g:coc_snippet_next = '<c-j>'
-
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-" let g:coc_snippet_prev = '<c-k>'
-
-" Use <C-j> for both expand and jump (make expand higher priority.)
-" imap <C-j> <Plug>(coc-snippets-expand-jump)
-"
-" Remap for rename current word
 nmap <leader>ewr <Plug>(coc-rename)
-:highlight CocFloating ctermbg=0
+
+highlight CocFloating ctermbg=0
 " }}}
 " WordNetwork Dictinoary / Thesaurus {{{
 func! WN_overview(wrd)
