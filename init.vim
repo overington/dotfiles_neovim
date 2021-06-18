@@ -38,7 +38,8 @@ Plug 'mattn/emmet-vim' " HTML 5 expansion
 
 Plug 'jmcantrell/vim-virtualenv'
 " Plug 'miyakogi/vim-virtualenv'
-Plug 'aperezdc/vim-template'
+" Plug 'aperezdc/vim-template'
+Plug 'tibabit/vim-templates'
 " Plug 'honza/vim-snippets'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
@@ -145,13 +146,15 @@ nnoremap <leader>[ :lprevious<CR>
 nnoremap g% :e <cfile><CR>
 " Open in new split
 nnoremap gV :belowright vsp <cfile><CR>
-nn <leader><leader>t :terminal /home/samove01/work/aiet/check-me.sh<CR>
-nn <leader><leader>T :terminal /home/samove01/work/aiet/check-me.sh<CR>G
+" let g:test_file = '/home/samove01/work/aiet/check-me.sh'
+" let g:test_file = '/home/samove01/work/aiet/run_docker_e2e.sh'
+nn <leader><leader>t :exec('terminal pytest')<CR>
+nn <leader><leader>T :exec('terminal ' . g:test_file )<CR>G
 
 " create new tab
 nnoremap <leader>TT :tabe<cr>
 " Search for word in current codebase
-let file_glob_expr = 'src/aiet/**/*/*.py'
+let file_glob_expr = 'src/**/*/*.py'
 
 " search for func in the sentence self.func() if cursor over it
 nnoremap <leader>* :execute('lvi /\<'.expand("<cword>").'\>/ '.file_glob_expr )<cr>
@@ -166,6 +169,14 @@ nnoremap <leader>lW :execute('lvi /'.expand("<cWORD>").'/ '.file_glob_expr )<cr>
 nnoremap <leader>lf :execute('lvi /'.expand("<cfile>").'/ '.file_glob_expr )<cr>
 
 
+" }}}
+" keyboard navigation / splitting {{{
+" vsplit and move right
+nnoremap <C-w>+ <C-w>v<C-w>l
+nnoremap <leader><leader>! :terminal sh %<CR>
+" }}}
+" Terminal mode {{{
+" tnoremap
 " }}}
 " navigation VIMRC {{{
 
@@ -217,9 +228,17 @@ nnoremap  <leader>yy  "+yy
 
 
 " }}}
-" Make {{{
-nnoremap <leader>xm :exe 'make %:r.o && ./%:r.o'<CR>
-nnoremap <leader>mm :exe 'make %:r.o && ./%:r.o'<CR>
+" GNU make and Makefiles {{{
+" Simple command to work with default ( :TemplateInit ) makefile. In order to
+" make sure that this will work, you might need to manualy create an 'obj'
+" directory, in the directory that the comman is run from.
+" 
+" Compile and run current file:
+nnoremap <leader>xm :exe 'make %:r && ./%:r'<CR>
+" Compile
+nnoremap <leader>mm :exe 'make %:r'<CR>
+" Edit the makefile in the curent directory
+nnor <leader>em :e Makefile<CR>
 
 " }}}
 " latex {{{
@@ -273,6 +292,10 @@ nnoremap <leader>dsv :call WN_synonyms(expand("<cword>"), 'v')<CR>
 nnoremap <leader>dsa :call WN_synonyms(expand("<cword>"), 'a')<CR>
 nnoremap <leader>dsr :call WN_synonyms(expand("<cword>"), 'r')<CR>
 
+" }}}
+" shell scripts  {{{
+" run python from current line to ```
+nnoremap <M-.> 0w"py$:r !<C-r>p<CR>jV/```<CR>
 " }}}
 
 " }}}
