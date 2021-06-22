@@ -122,6 +122,7 @@ nnoremap <C-\> :call ToggleNetrwBrowser()<cr>
 " Keyboard mappings (General) {{{
 " enter spell checking mode
 nnoremap <leader><leader>/ :setlocal spell! spelllang=en_gb<CR>
+tnoremap <Esc> <C-\><C-n>
 
 " <leader>v mappings:
 " Turn off hilighting
