@@ -1,4 +1,4 @@
 pynvim
-pylint
-jedi-language-server
-jedi
+# pylint
+# jedi-language-server
+# jedi

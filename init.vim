@@ -322,9 +322,9 @@ autocmd FileType json syntax match Comment +\/\/.\+$+
 " }}}
 " python global settings {{{
 "python with virtualenv support
-let g:python3_host_prog = '$HOME/.virtualenvs/nvim/bin/python3'
+let g:python3_host_prog = '$HOME/.pyenv/versions/nvim/bin/python3'
 " let g:python3_host_prog = '/home/samove01/.virtualenvs/nvim/bin/python3'
-let g:python_host_prog = '$HOME/.virtualenvs/nvim/bin/python'
+let g:python_host_prog = '$HOME/.pyenv/versions/nvim/bin/python'
 " }}}
 " VimWiki {{{
 let g:vimwiki_list = [{'path': '$HOME/Documents/vimwiki/',
