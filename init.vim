@@ -60,6 +60,8 @@ let mapleader = ","
 let maplocalleader = "`"
 set number
 set path+=src
+let g:tmpl_search_paths = ['$HOME/.config/templates']
+let g:cmake_root_markers = ['CMakeLists.txt', 'build', '.git', '.svn']
 
 " Auto-update buffer to most recent version of file, when file has been edited outside current session. Specifically fixes python-black edit
 au FocusGained,BufEnter * :checktim
