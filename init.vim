@@ -20,9 +20,7 @@ Plug 'felixhummel/setcolors.vim'
 
 Plug 'vim-syntastic/syntastic'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" coc-jedi: Python autocompletion
-Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
-Plug 'clangd/coc-clangd', { 'do': 'yarn install --frozen-lockfile && yarn build' }
+" Coc extensions installed below, add to g:coc_global_extensions
 
 " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 " If you have nodejs and yarn
@@ -37,10 +35,7 @@ Plug 'lervag/vimtex'
 Plug 'mattn/emmet-vim' " HTML 5 expansion
 
 Plug 'jmcantrell/vim-virtualenv'
-" Plug 'miyakogi/vim-virtualenv'
-" Plug 'aperezdc/vim-template'
 Plug 'tibabit/vim-templates'
-" Plug 'honza/vim-snippets'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
@@ -59,7 +54,7 @@ filetype indent on
 
 " Look and feel of vim {{{ 
 "
-
+let g:coc_global_extensions = ['coc-jedi', 'coc-clangd', 'coc-diagnostic']
 let g:polyglot_disabled = ['latex']
 let mapleader = ","
 let maplocalleader = "`"
@@ -69,6 +64,10 @@ set path+=src
 " Auto-update buffer to most recent version of file, when file has been edited outside current session. Specifically fixes python-black edit
 au FocusGained,BufEnter * :checktim
 
+" VigGrep with Ag  The silver searcher  {{{
+set grepprg=ag\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
+" }}}
 " Statusline {{{
 set statusline^=%{coc#status()}
 " set statusline+=(%{$VIRTUAL_ENV})
@@ -150,7 +149,8 @@ nnoremap gV :belowright vsp <cfile><CR>
 " let g:test_file = '/home/samove01/work/aiet/check-me.sh'
 " let g:test_file = '/home/samove01/work/aiet/run_docker_e2e.sh'
 nn <leader><leader>t :exec('terminal pytest')<CR>
-nn <leader><leader>T :exec('terminal ' . g:test_file )<CR>G
+nn <leader><leader>T :exec('terminal pytest -m donow')<CR>
+" nn <leader><leader>T :exec('terminal ' . g:test_file )<CR>G
 
 " create new tab
 nnoremap <leader>TT :tabe<cr>
@@ -210,6 +210,7 @@ nmap <leader>L <Plug>(simple-todo-new-list-item-start-of-line)
 " }}}
 " folding {{{
 set foldlevelstart=0
+
 " Space to toggle folds
 nnoremap <leader>z0 :set foldlevel=0
 nnoremap <leader>z1 :set foldlevel=1
@@ -217,7 +218,7 @@ nnoremap <leader>z2 :set foldlevel=2
 nnoremap <leader>z3 :set foldlevel=3
 nnoremap <leader>z4 :set foldlevel=4
 nnoremap <Space> za
-vnoremap <Space> za
+vnoremap <Space> zf
 " }}}
 " Copy and paste to clipboard {{{
 set pastetoggle=<M-p>
@@ -322,9 +323,9 @@ autocmd FileType json syntax match Comment +\/\/.\+$+
 " }}}
 " python global settings {{{
 "python with virtualenv support
-let g:python3_host_prog = '$HOME/.pyenv/versions/nvim/bin/python3'
+let g:python3_host_prog = '$HOME/.config/nvim/venv/bin/python3'
 " let g:python3_host_prog = '/home/samove01/.virtualenvs/nvim/bin/python3'
-let g:python_host_prog = '$HOME/.pyenv/versions/nvim/bin/python'
+let g:python_host_prog = '$HOME/.config/nvim/venv/bin/python'
 " }}}
 " VimWiki {{{
 let g:vimwiki_list = [{'path': '$HOME/Documents/vimwiki/',

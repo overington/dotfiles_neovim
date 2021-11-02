@@ -22,40 +22,15 @@ vnoremap <leader>xc ""y :python3 <C-r>0<CR>
 " vnoremap 
 
 
-" vnoremap <NL> :python %<CR>
-" nnoremap <NL> :!python %<CR>
 nnoremap <leader>xp :w<CR>:!python %<CR>
-" inoremap <C-X> <ESC>:w<CR>:!python %<CR>
 
 
 let g:pyindent_open_paren = '&sw * 2'  " Default values
-" set tabstop=2 shiftwidth=2 expandtab
-" set list
-" set lcs=tab:>-,trail:-
 
-" nmap <silent> <leader>+ :call ToggleIndentGuidesTabs()<cr>
-" nmap <silent> <leader>= :call ToggleIndentGuidesSpaces()<cr>
+" Navigate to next/previous function / class
+nnoremap ]n /^ *def <cr>
+nnoremap ]N /^ *class <cr>
+nnoremap [n ?^ *def <cr>
+nnoremap [N ?^ *class <cr>
 
-" function! ToggleIndentGuidesTabs()
-  " if exists('b:iguides_tabs')
-		" setlocal nolist
-		" let &l:listchars = b:iguides_tabs
-		" unlet b:iguides_tabs
-	" else
-		" let b:iguides_tabs = &l:listchars
-		" setlocal listchars=tab:┆\ "protect the space
-		" setlocal list
-	" endif
-" endfunction
-
-" function! ToggleIndentGuidesSpaces()
-	" if exists('b:iguides_spaces')
-		" call matchdelete(b:iguides_spaces)
-		" unlet b:iguides_spaces
-	" else
-		" let pos = range(1, &l:textwidth, &l:shiftwidth)
-		" call map(pos, '"\\%" . v:val . "v"')
-		" let pat = '\%(\_^\s*\)\@<=\%(' . join(pos, '\|') . '\)\s'
-		" let b:iguides_spaces = matchadd('CursorLine', pat)
-	" endif
-" endfunction
+" vim:foldmethod=marker:foldlevel=0
