@@ -18,7 +18,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sonph/onehalf', {'rtp': 'vim/'}  " Colourscheme
 Plug 'felixhummel/setcolors.vim'
 
-Plug 'vim-syntastic/syntastic'
+" Plug 'vim-syntastic/syntastic'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Coc extensions installed below, add to g:coc_global_extensions
 
@@ -72,7 +72,7 @@ set grepprg=ag\ --vimgrep\ $*
 set grepformat=%f:%l:%c:%m
 " }}}
 " Statusline {{{
-set statusline^=%{coc#status()}
+" set statusline^=%{coc#status()}
 " set statusline+=(%{$VIRTUAL_ENV})
 " }}}
 " Colorscheme {{{
@@ -329,9 +329,9 @@ let NERDSpaceDelims=1
 
 " " Syntastic
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
