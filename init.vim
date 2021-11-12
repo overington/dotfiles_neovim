@@ -32,6 +32,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'masukomi/vim-markdown-folding'
 Plug 'vitalk/vim-simple-todo'
 Plug 'lervag/vimtex'
+Plug 'psf/black', { 'branch': 'stable' }
 Plug 'mattn/emmet-vim' " HTML 5 expansion
 
 Plug 'jmcantrell/vim-virtualenv'
@@ -54,18 +55,18 @@ filetype indent on
 
 " Look and feel of vim {{{ 
 "
-let g:coc_global_extensions = ['coc-jedi', 'coc-clangd', 'coc-diagnostic']
 let g:polyglot_disabled = ['latex']
 let mapleader = ","
 let maplocalleader = "`"
 set number
 set path+=src
-let g:tmpl_search_paths = ['$HOME/.config/templates']
 let g:cmake_root_markers = ['CMakeLists.txt', 'build', '.git', '.svn']
 
 " Auto-update buffer to most recent version of file, when file has been edited outside current session. Specifically fixes python-black edit
 au FocusGained,BufEnter * :checktim
-
+" vim-templates {{{
+let g:tmpl_search_paths = ['$HOME/.config/templates'] " templates
+" }}}
 " VigGrep with Ag  The silver searcher  {{{
 set grepprg=ag\ --vimgrep\ $*
 set grepformat=%f:%l:%c:%m
@@ -191,8 +192,11 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 " My FT plugins
 nnoremap <leader>eft :vsp ~/.config/nvim/ftplugin/<CR>
 
-" My Python Files
+" My Python config Files
 nnoremap <leader>epy :vsp ~/.config/nvim/ftplugin/python_mappings.vim <CR>
+"
+" My Coc config Files
+nnoremap <leader>ec :vsp ~/.config/nvim/after/plugin/coc.vim<CR>
 " serach through vimrc files
 func! SearchVimConfig(searchtext)
   exe '!ag '. a:searchtext .' ~/.config/nvim/'
@@ -203,8 +207,8 @@ nnoremap <leader>esvc :redir => g:searchtext<cr>:exe ":call input('Enter search:
 " Git {{{
 nnoremap <leader>ga :Git add %<CR>
 nnoremap <leader>gw :w<cr>:Git add %<CR>
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gc :Git commit<CR>
 " }}}
 " simpleTODO {{{
 nmap <leader>l <Plug>(simple-todo-new-list-item)
@@ -258,22 +262,7 @@ nnoremap <leader>Lg :!lualatex %;<CR>:spl<CR>:e %:r.log<CR>
 
 " }}}
 " COC  {{{
-" GoTo code navigation
-nmap <silent> gd <plug>(coc-definition)
-nmap <silent> gy <plug>(coc-type-definition)
-nmap <silent> gi <plug>(coc-implementation)
-nmap <silent> gr <plug>(coc-references)
-
-" vmap <leader>p  <Plug>(coc-format-selected)
-vmap <C-o> <Plug>(coc-format-selected)
-
-" edit current file snippets
-nnoremap <leader>esf :CocCommand snippets.editSnippets<CR>
-nnoremap <leader>eso :CocCommand snippets.openSnippetFiles<CR>
-
-nmap <leader>ewr <Plug>(coc-rename)
-
-highlight CocFloating ctermbg=0
+" config files moved to after/plugin/coc.vim
 " }}}
 " WordNetwork Dictinoary / Thesaurus {{{
 func! WN_overview(wrd)

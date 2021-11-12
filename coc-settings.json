@@ -16,6 +16,7 @@
   "jedi.diagnostics.didChange": true,
   "jedi.diagnostics.didSave": true,
   "jedi.workspace.extraPaths": [],
+	"diagnostic-languageserver.enable": true,
 
   "diagnostic-languageserver.filetypes": {
 		"python": "pylint"
@@ -58,5 +59,22 @@
 			"formatLines": 1
 		}
   },
+	"diagnostic-languageserver.formatFiletypes": {
+		"python": ["black", "isort", "docformatter"]
+	},
+	"diagnostic-languageserver.formatters": {
+		"black": {
+			"command": "black",
+			"args": ["-q", "-"]
+		},
+		"isort": {
+			"command": "isort",
+			"args": ["-q", "-"]
+		},
+		"docformatter": {
+			"command": "docformatter",
+			"args": ["-"]
+		}
+	},
   "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd"
 }
