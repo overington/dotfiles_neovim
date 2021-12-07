@@ -22,7 +22,7 @@ vnoremap <leader>xc ""y :python3 <C-r>0<CR>
 " vnoremap 
 
 
-nnoremap <leader>xp :w<CR>:!python %<CR>
+nnoremap <leader>xp :w<CR>:terminal python %<CR>
 
 
 let g:pyindent_open_paren = '&sw * 2'  " Default values
