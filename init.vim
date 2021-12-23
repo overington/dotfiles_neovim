@@ -158,7 +158,7 @@ nn <leader><leader>T :exec('terminal pytest -m donow')<CR>
 " create new tab
 nnoremap <leader>TT :tabe<cr>
 " Search for word in current codebase
-let file_glob_expr = 'src/**/*/*.py'
+let file_glob_expr = 'gesture_recognition/**/*/*.py'
 
 " search for func in the sentence self.func() if cursor over it
 nnoremap <leader>* :execute('lvi /\<'.expand("<cword>").'\>/ '.file_glob_expr )<cr>
@@ -181,6 +181,16 @@ nnoremap <leader><leader>! :terminal sh %<CR>
 " }}}
 " Terminal mode {{{
 " tnoremap
+" launch ipython terminal
+if executable('ipython')
+  let pybin = 'ipython'
+else
+  let pybin = 'python'
+endif
+
+nnoremap gt :execute('Term ')<cr>
+nnoremap gtp :execute('Term '. pybin )<cr>
+nnoremap gtP :execute('VTerm '. pybin )<cr>
 " }}}
 " navigation VIMRC {{{
 
