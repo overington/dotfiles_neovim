@@ -18,7 +18,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sonph/onehalf', {'rtp': 'vim/'}  " Colourscheme
 Plug 'felixhummel/setcolors.vim'
 
-" Plug 'vim-syntastic/syntastic'
+Plug 'vim-syntastic/syntastic'
+Plug 'psf/black', { 'branch': 'stable' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Coc extensions installed below, add to g:coc_global_extensions
 
@@ -196,7 +197,6 @@ nnoremap gtP :execute('VTerm '. pybin )<cr>
 
 " my init.vim
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
-nnoremap <leader>xsv :source $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " My FT plugins
