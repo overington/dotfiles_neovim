@@ -1,19 +1,22 @@
 {
   // my variable
-  "suggest.autoTrigger": "trigger",
+  // "suggest.autoTrigger": "trigger",
+  "pyright.enable": true,
+  "python.formatting.provider": "black",
+  "python.linting.pylintEnables": true,
   // "python.setInterpreter": "%{$VIRTUAL_ENV}./bin/python"
   // coc-jedi
-  "jedi.enable": true,
-  "jedi.startupMessage": false,
-  "jedi.markupKindPreferred": "plaintext",
-  "jedi.trace.server": "off",
-  "jedi.jediSettings.autoImportModules": [],
-  "jedi.executable.command": "jedi-language-server",
-  "jedi.executable.args": [],
-  "jedi.completion.disableSnippets": false,
-  "jedi.diagnostics.enable": true,
-  "jedi.diagnostics.didOpen": true,
-  "jedi.diagnostics.didChange": true,
-  "jedi.diagnostics.didSave": true,
-  "jedi.workspace.extraPaths": []
+  // "jedi.enable": true,
+  // "jedi.startupMessage": false,
+  // "jedi.markupKindPreferred": "plaintext",
+  // "jedi.trace.server": "off",
+  // "jedi.jediSettings.autoImportModules": [],
+  // "jedi.executable.command": "jedi-language-server",
+  // "jedi.executable.args": [],
+  // "jedi.completion.disableSnippets": false,
+  // "jedi.diagnostics.enable": true,
+  // "jedi.diagnostics.didOpen": true,
+  // "jedi.diagnostics.didChange": true,
+  // "jedi.diagnostics.didSave": true,
+  // "jedi.workspace.extraPaths": []
 }

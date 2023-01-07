@@ -1,88 +1,81 @@
-
-"
 " Plugins {{{
-
-" '~/.config/nvim/ftplugin/'
-
 let g:polyglot_disabled = ['markdown', 'latex']
-
 "
 call plug#begin('~/.config/nvim/plugged')
-
-" Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+" UI / look and feel {{{
 Plug 'tpope/vim-sensible'
+Plug 'junegunn/seoul256.vim'
+Plug 'felixhummel/setcolors.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'sheerun/vim-polyglot' " Language / syntax hilighting
+" }}}
+" Utilities {{{
 Plug 'tpope/vim-fugitive'
 Plug 'ctrlpvim/ctrlp.vim'
-"
-" Plug 'flazz/vim-colorschemes'  " A bunch of ColourSchemes
-" Plug 'dylanaraps/wal.vim'
-" Plug 'junegunn/seoul256.vim'
-Plug 'sonph/onehalf', {'rtp': 'vim/'}  " Colourscheme
-Plug 'felixhummel/setcolors.vim'
-
-Plug 'vim-syntastic/syntastic'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" coc-jedi: Python autocompletion
-Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
-Plug 'clangd/coc-clangd', { 'do': 'yarn install --frozen-lockfile && yarn build' }
-
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-" If you have nodejs and yarn
-Plug 'vimwiki/vimwiki' " vimwiki
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'vimlab/split-term.vim'
+Plug 'vimwiki/vimwiki'
+Plug 'scrooloose/nerdcommenter'
+Plug 'thaerkh/vim-indentguides'
+Plug 'tpope/vim-surround'
+Plug 'aperezdc/vim-template'
+Plug 'vitalk/vim-simple-todo'
 Plug 'jkramer/vim-checkbox'
+Plug 'nvim-lua/popup.nvim'
+Plug 'mattn/emmet-vim'
+
+Plug 'mfussenegger/nvim-lint'
+Plug 'mhartington/formatter.nvim'
+" }}}
+" LSP / Autocompletion {{{
+" completion
+Plug 'williamboman/mason.nvim' " to manage LSP & DAP servers, linters, and formatters.
+Plug 'williamboman/mason-lspconfig.nvim' " bridge mason.nvim with the lspconfig
+Plug 'neovim/nvim-lspconfig'
+
+Plug 'hrsh7th/nvim-cmp'
+
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-path'
+
+" Snippets
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+
+Plug 'dense-analysis/ale'
+" Plug 'davidhalter/jedi-vim'
+" Plug 'lifepillar/vim-mucomplete'
+" set completeopt+=menuone " Mandatory for mucomplete
+" }}}
+" Languages {{{
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'godlygeek/tabular' "must come before vim-markdown
 Plug 'plasticboy/vim-markdown'
 Plug 'masukomi/vim-markdown-folding'
-Plug 'vitalk/vim-simple-todo'
 Plug 'lervag/vimtex'
-Plug 'mattn/emmet-vim' " HTML 5 expansion
-
-Plug 'jmcantrell/vim-virtualenv'
-" Plug 'miyakogi/vim-virtualenv'
-Plug 'aperezdc/vim-template'
-" Plug 'honza/vim-snippets'
-Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdcommenter'
-Plug 'thaerkh/vim-indentguides'
-" Plug 'Yggdroot/indentLine'
-
-" Plug 'wsdjeg/vim-todo'
-Plug 'vimlab/split-term.vim'
-
+" }}}
 call plug#end()
 
 filetype plugin on
 filetype indent on
 
 " }}}
-
 " Look and feel of vim {{{ 
 "
-
 let mapleader = ","
 let maplocalleader = "`"
 set showmatch " show matching surround
 set number
+let g:nvimConfDir = $HOME . '/.config/nvim'
 
 " Auto-update buffer to most recent version of file, when file has been edited outside current session. Specifically fixes python-black edit
 au FocusGained,BufEnter * :checktim
 
 " Statusline {{{
-set statusline^=%{coc#status()}
+" set statusline^=%{coc#status()}
 " set statusline+=(%{$VIRTUAL_ENV})
-" }}}
-" Colorscheme {{{
-" colorscheme elflord
-" set termguicolors
-" hi Conceal ctermbg=none
-" colorscheme wal
-syntax on
-set t_Co=256
-set cursorline
-colorscheme onehalfdark
-" let g:airline_theme='onehalfdark'
 " }}}
 " Indentation {{{
 " https://vim.fandom.com/wiki/Indenting_source_code
@@ -92,6 +85,9 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 " }}}
+" COC  {{{
+" execute 'source '.fnameescape(join([g:nvimConfDir,  'coc-config.vim'], '/'))
+" }}}
 " netrw preference {{{
 
 " =0: re-using the same window  (default)
@@ -99,7 +95,7 @@ set softtabstop=2
 " =2: vertically   splitting the window first
 " =3: open file in new tab
 " =4: act like "P" (ie. open previous window)
-let g:netrw_browse_split=4
+let g:netrw_browse_split=0
 let t:netrw_toggle=0
 
 " = 0: thin listing (one file per line)
@@ -113,13 +109,26 @@ endf
 nnoremap <C-\> :call ToggleNetrwBrowser()<cr>
 
 " }}}
+" Goyo / Limelight {{{
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
+
+" let g:limelight_conceal_ctermfg = 240
+" }}} Goyo / Limelight
+" Neoformat settings {{{
+let g:neoformat_try_node_exe = 1
+" }}}
 "
 
 
 " Unified color scheme (default: dark)
 " }}}
 " Keyboard mappings {{{
-" Keyboard mappings (General) {{{
+" General {{{
+
+" Enter YYYY-MM-DD in insert mode
+imap <C-t> <C-r>=strftime('%F')<CR>
+
 " enter spell checking mode
 nnoremap <leader><leader>/ :setlocal spell! spelllang=en_gb<CR>
 
@@ -128,7 +137,6 @@ nnoremap <leader><leader>/ :setlocal spell! spelllang=en_gb<CR>
 nnoremap <leader>vh :nohl<CR>
 " toggle conceallevel in settings
 nnoremap <leader>vc :call ConcealLevelToggle()<CR>
-
 fun! ConcealLevelToggle()
   :let &conceallevel = (&conceallevel+1)%3
 endf
@@ -138,6 +146,7 @@ fun! AddLocalCompletion()
   " Add files in current directory to the completion setting
   set complete+=",s=%:r*"
 endf
+
 " Quickfix next and previous
 nnoremap <leader>] :lnext<CR>
 nnoremap <leader>[ :lprevious<CR>
@@ -146,18 +155,15 @@ nnoremap <leader>[ :lprevious<CR>
 nnoremap g% :e <cfile><CR>
 " Open in new split
 nnoremap gV :belowright vsp <cfile><CR>
-nn <leader><leader>t :terminal /home/samove01/work/aiet/check-me.sh<CR>
-nn <leader><leader>T :terminal /home/samove01/work/aiet/check-me.sh<CR>G
 
 " open a new tab
 nnoremap <leader>tt :tabe<cr>
-" Execute pytest
-tnoremap <leader>xpt :terminal pytest<cr>
-nnoremap <leader>xpt :terminal pytest<cr>
-" Search for word in current codebase
-let file_glob_expr = 'src/aiet/**/*/*.py'
 
-" search for func in the sentence self.func() if cursor over it
+" Search for word in current codebase
+let file_glob_expr = '**/*/*.py'
+
+" Search 
+" search for <func> in the sentence self.func()
 nnoremap <leader>lw :execute('lvi /'.expand("<cword>").'/ '.file_glob_expr )<cr>
 
 " search for self.func() in the sentence self.func() if cursor over self or func
@@ -172,8 +178,13 @@ nnoremap <leader>lf :execute('lvi /'.expand("<cfile>").'/ '.file_glob_expr )<cr>
 
 " my init.vim
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>gev :e $MYVIMRC<CR>
 nnoremap <leader>xsv :source $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" My coc-config.vim file
+nnoremap <leader>ecv :vsp $COC_VIMCONFIG/coc-config.vim<CR>
+nnoremap <leader>ecj :vsp $COC_VIMCONFIG/coc-settings.json<CR>
 
 " My FT plugins
 nnoremap <leader>eft :vsp ~/.config/nvim/ftplugin/<CR>
@@ -190,8 +201,8 @@ nnoremap <leader>esvc :redir => g:searchtext<cr>:exe ":call input('Enter search:
 " Git {{{
 nnoremap <leader>ga :Git add %<CR>
 nnoremap <leader>gw :w<cr>:Git add %<CR>
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gc :Git commit<CR>
 " }}}
 " simpleTODO {{{
 nmap <leader>l <Plug>(simple-todo-new-list-item)
@@ -209,7 +220,7 @@ nnoremap <Space> za
 vnoremap <Space> za
 " }}}
 " Copy and paste to clipboard {{{
-set pastetoggle=<M-p>
+set pastetoggle=<C-/>
 " set clipboard+=unmappedplus
 vnoremap  <leader>y  "+y
 nnoremap  <leader>Y  "+yg_
@@ -235,35 +246,9 @@ nnoremap <leader>LL :!lualatex %;open %:r.pdf<CR>
 nnoremap <leader>Lg :!lualatex %;<CR>:spl<CR>:e %:r.log<CR>
 
 " }}}
-" COC  {{{
-" vmap <leader>p  <Plug>(coc-format-selected)
-vmap <C-o> <Plug>(coc-format-selected)
-" edit current file snippets
-nnoremap <leader>esf :CocCommand snippets.editSnippets<CR>
-nnoremap <leader>eso :CocCommand snippets.openSnippetFiles<CR>
-" nnoremap <leader>eso :call CocCommand('snippets.openSnippetFiles', 'vsplit')<CR>
-" <Plug>(coc-diagnostic-next) 			*n_coc-diagnostic-next*
-" <Plug>(coc-diagnostic-prev) 			*n_coc-diagnostic-prev*
-"
-" Use <C-l> for trigger snippet expand.
-" imap <C-l> <Plug>(coc-snippets-expand)
 
-" Use <C-j> for select text for visual placeholder of snippet.
-" vmap <C-j> <Plug>(coc-snippets-select)
-
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-" let g:coc_snippet_next = '<c-j>'
-
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-" let g:coc_snippet_prev = '<c-k>'
-
-" Use <C-j> for both expand and jump (make expand higher priority.)
-" imap <C-j> <Plug>(coc-snippets-expand-jump)
-"
-" Remap for rename current word
-nmap <leader>ewr <Plug>(coc-rename)
-:highlight CocFloating ctermbg=0
 " }}}
+" Language Specific {{{
 " WordNetwork Dictinoary / Thesaurus {{{
 func! WN_overview(wrd)
   " Show the overview of the word using WordNetwork
@@ -286,11 +271,6 @@ nnoremap <leader>dsa :call WN_synonyms(expand("<cword>"), 'a')<CR>
 nnoremap <leader>dsr :call WN_synonyms(expand("<cword>"), 'r')<CR>
 
 " }}}
-
-" }}}
-
-" Language Specific {{{
-
 " text {{{
 function! TwiddleCase(str)
   if a:str ==# toupper(a:str)
@@ -310,43 +290,72 @@ autocmd FileType json syntax match Comment +\/\/.\+$+
 " }}}
 " python global settings {{{
 "python with virtualenv support
-let g:python3_host_prog = '$HOME/.virtualenvs/nvim/bin/python3'
-" let g:python3_host_prog = '/home/samove01/.virtualenvs/nvim/bin/python3'
-let g:python_host_prog = '$HOME/.virtualenvs/nvim/bin/python'
+if !empty($PYENV_ROOT)
+  let g:python3_host_prog = '$PYENV_ROOT/versions/nvim/bin/python3'
+  let g:python_host_prog =  '$PYENV_ROOT/versions/nvim/bin/python'
+else
+  cd $HOME/.config/nvim/
+  !make install
+  let g:python_host_prog3 = '/Users/soverington/.config/nvim/venv/bin/python'
+  let g:python_host_prog =  '/Users/soverington/.config/nvim/venv/bin/python'
+endif
 " }}}
 " VimWiki {{{
 let g:vimwiki_list = [{'path': '$HOME/Documents/vimwiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
 " }}}
-" Plugins and settings {{{
+" Colorscheme {{{
+" colorscheme elflord
+" set termguicolors
+" hi Conceal ctermbg=none
+" colorscheme wal
+syntax on
+set cursorline
+" colorscheme onehalfdark
+" set t_Co=256
+let g:seoul256_background = 236
+colorscheme seoul256
+set background=dark
 
-" nerdcommenter
-let NERDSpaceDelims=1
+""" Customize colors
+func! s:my_colors_setup() abort
+    " this is an example
+    hi CocCodeLens ctermfg=248 guifg=NONE
 
-" " Syntastic
+    hi Pmenu guibg=#d7e5dc gui=NONE
+    hi PmenuSel guibg=#b7c7b7 gui=NONE
+    hi PmenuSbar guibg=#bcbcbc
+    hi PmenuThumb guibg=#585858
+endfunc
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-let g:syntastic_python_checkers = ['pylint', 'pydocstyle']
-" let g:syntastic_python_checkers = ['pylint', 'mypy', 'pep8']
-
-nnoremap <leader>x? :SyntasticCheck<CR>
-let g:syntastic_mode_map = {
-  \ "mode": "passive",
-  \ "active_filetypes": ["c", "c++"],
-  \ "passive_filetypes": ["python"] }
-
-" VimTex default flavour https://github.com/lervag/vimtex/commit/f78a0bdadbe9bccf15df855268e3e38ec8b3c7c3
-let g:tex_flavor = 'latex'
+" augroup colorscheme_coc_setup | au!
+"     au ColorScheme * call s:my_colors_setup()
+" augroup END
 
 
 " }}}
+" Plugins and settings {{{
+nnoremap <leader>ecs :vsp $HOME/.config/nvim/lua/completion-settings.lua<CR>
+luafile $HOME/.config/nvim/lua/completion-settings.lua
+let g:LanguageClient_autoStart = 1
+" nerdcommenter {{{
+let NERDSpaceDelims=1
+" }}}
+" CtrlP {{{
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" }}}
+" ale {{{
 
+set omnifunc=ale#completion#OmniFunc
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" VimTex default flavour https://github.com/lervag/vimtex/commit/f78a0bdadbe9bccf15df855268e3e38ec8b3c7c3
+let g:tex_flavor = 'latex'
+let g:ale_python_auto_poetry = v:true
+let g:ale_python_pylint_auto_poetry = v:true
+
+
+" }}}
+" }}}
+" }}}
 " vim:foldmethod=marker:foldlevel=0

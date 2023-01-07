@@ -1,4 +1,6 @@
 pynvim
 pylint
+pyright
+python-lsp-server[all]
 jedi-language-server
 jedi
