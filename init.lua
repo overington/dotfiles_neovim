@@ -45,6 +45,15 @@ require('packer').startup(function(use)
     after = 'nvim-treesitter',
   }
 
+  -- Linting and formatting
+  use {
+    'jose-elias-alvarez/null-ls.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim'
+    }
+  }
+
+
   -- Git related plugins
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
@@ -163,6 +172,7 @@ end
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', '<leader>ei', ':e $HOME/.config/nvim/init.lua<CR>', {desc = '[E]dit [I]nit.lua'})
+vim.keymap.set('n', '<leader>eft', ':e /Users/soverington/.config/nvim/ftplugin/<CR>', {desc = '[E]dit [FT]plugin/'})
 vim.keymap.set('n', '<leader><leader>ei', ':tabe $HOME/.config/nvim/init.lua<CR>', {desc = '[E]dit [I]nit.lua in new tab'})
 vim.keymap.set('n', '<leader>si', ':source $HOME/.config/nvim/init.lua<CR>', {desc = '[S]ource [I]nit.lua'})
 
@@ -251,7 +261,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim' },
+  ensure_installed = { 'bash', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim' },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
@@ -354,8 +364,9 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
-  -- nmap('<leader>gu', vim.api.nvim_command(':e %:h<CR>'), '[G]o [U]p directory')
+  nmap('<leader>gu', ':e %:h', '[G]o [U]p directory')
 
+  -- Formatting
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
