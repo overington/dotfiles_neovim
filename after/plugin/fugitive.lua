@@ -1,0 +1,5 @@
+vim.keymap.set('n', '<leader>eai', ':e $HOME/.config/nvim/after/<CR>')
+vim.keymap.set('n', '<leader>ga', ':Git add %<CR>')
+vim.keymap.set('n', '<leader>gw', ':w<cr>:Git add %<CR>')
+vim.keymap.set('n', '<leader>gs', ':G<CR>')
+vim.keymap.set('n', '<leader>gc', ':G commit<CR>')

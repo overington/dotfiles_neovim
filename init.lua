@@ -74,6 +74,9 @@ require('packer').startup(function(use)
   -- use 'godlygeek/tabular' "must come before vim-markdown
   -- use 'plasticboy/vim-markdown'
   -- use 'masukomi/vim-markdown-folding'
+  use 'vimwiki/vimwiki'
+  vim.g.vimwiki_list = {{path = '~/Documents/Mywiki', syntax = 'markdown', ext = '.md'}}
+
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
