@@ -1,4 +1,4 @@
-local au = require('au')
+-- local au = require('au')
 
 vim.cmd{cmd = 'set', args = {'nocompatible'}}
 vim.cmd{cmd = 'filetype', args = {'plugin', 'on'}}
