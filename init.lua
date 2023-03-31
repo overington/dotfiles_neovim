@@ -1,8 +1,6 @@
--- https://github.com/nvim-lua/kickstart.nvim
--- install packer
+-- Install packer
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
-local HOME = os.getenv('HOME')
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   is_bootstrap = true
   vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
@@ -50,21 +48,11 @@ require('packer').startup(function(use)
   use 'tpope/vim-rhubarb'
   use 'lewis6991/gitsigns.nvim'
 
-  -- use 'navarasu/onedark.nvim' -- Theme inspired by Atom
-  use 'junegunn/seoul256.vim'
-  use 'junegunn/goyo.vim' -- Distraction free writing
-  use 'junegunn/limelight.vim' -- Focus on the lin you are writing, and dim prev / post
+  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
-  use 'vimlab/split-term.vim'
-  use 'tpope/vim-surround'
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
-  use 'mattn/emmet-vim'
-  -- use 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-  -- use 'godlygeek/tabular' "must come before vim-markdown
-  -- use 'plasticboy/vim-markdown'
-  -- use 'masukomi/vim-markdown-folding'
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
@@ -123,8 +111,8 @@ vim.o.breakindent = true
 vim.o.undofile = true
 
 -- Case insensitive searching UNLESS /C or capital in search
-vim.o.ignorecase = false
-vim.o.smartcase = false
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
 -- Decrease update time
 vim.o.updatetime = 250
@@ -132,39 +120,21 @@ vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 vim.o.termguicolors = true
-vim.g.seoul256_background = 235
-vim.cmd [[colorscheme seoul256]]
+vim.cmd [[colorscheme onedark]]
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
 -- [[ Basic Keymaps ]]
--- Set <,> as the leader key
+-- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
-vim.g.mapleader = ','
-vim.g.maplocalleader = '`'
-
--- Set host progs
--- python
-vim.g.python3_host_prog = HOME .. '/.config/nvim/venv/bin/python3'
-vim.g.python_host_prog = HOME .. '/.config/nvim/venv/bin/python'
--- node
-local NODE_VERSION_FILE = io.open(HOME .. '/.nvm/alias/default')
-if NODE_VERSION_FILE then
-  local NODE_VERSION = NODE_VERSION_FILE:read()
-  local NODE_PATH = HOME .. '/.nvm/versions/node/v'.. NODE_VERSION ..'/bin/node'
-  -- print("Setting node path: " .. NODE_PATH)
-  vim.g.node_host_prog = NODE_PATH
-  NODE_VERSION_FILE:close()
-end
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-vim.keymap.set('n', '<leader>ei', ':e $HOME/.config/nvim/init.lua<CR>', {desc = '[E]dit [I]nit.lua'})
-vim.keymap.set('n', '<leader><leader>ei', ':tabe $HOME/.config/nvim/init.lua<CR>', {desc = '[E]dit [I]nit.lua in new tab'})
-vim.keymap.set('n', '<leader>si', ':source $HOME/.config/nvim/init.lua<CR>', {desc = '[S]ource [I]nit.lua'})
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -186,7 +156,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    theme = 'seoul256',
+    theme = 'onedark',
     component_separators = '|',
     section_separators = '',
   },
@@ -354,7 +324,6 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
-  -- nmap('<leader>gu', vim.api.nvim_command(':e %:h<CR>'), '[G]o [U]p directory')
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
