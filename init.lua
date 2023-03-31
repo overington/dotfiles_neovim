@@ -174,6 +174,7 @@ end
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set('n', '<leader>tei', ':tabe $HOME/.config/nvim/init.lua<CR>', {desc = '[E]dit [I]nit.lua (new tabe)'})
 vim.keymap.set('n', '<leader>ei', ':e $HOME/.config/nvim/init.lua<CR>', {desc = '[E]dit [I]nit.lua'})
 vim.keymap.set('n', '<leader>eft', ':e /Users/soverington/.config/nvim/ftplugin/<CR>', {desc = '[E]dit [FT]plugin/'})
 vim.keymap.set('n', '<leader><leader>ei', ':tabe $HOME/.config/nvim/init.lua<CR>', {desc = '[E]dit [I]nit.lua in new tab'})
